@@ -7,10 +7,17 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 1f;
     public float collisionOffset = 0.05f;
+    public AudioSource walkNoise;
 
     public ContactFilter2D movementFilter;
 
     Vector2 movementInput;
+
+    private bool isWalking;
+
+    Vector2 movement;
+
+    public Animator animator;
 
     Rigidbody2D rb;
 
@@ -20,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        isWalking = false;
+        InvokeRepeating("WalkingSoundPlay",1f,1f);
     }
 
     // Update is called once per frame
@@ -33,21 +42,43 @@ public class PlayerMovement : MonoBehaviour
                 movementFilter, //The setting that determines where a collision can occur on such as layers to collide with
                 castCollisions, //List of the collisions found into after the Cast is finished
                 moveSpeed * Time.fixedDeltaTime + collisionOffset); //Amount of cast, equal to the offset plus the movement
+            isWalking = false;
             print(count);
 
             if(count == 0)
             {
                 rb.MovePosition(rb.position + movementInput * moveSpeed * Time.fixedDeltaTime);
+
                 print("Moving!");
-                //audioSource.Play();
+                isWalking = true;
             }
 
         }
 
     }
 
+    void Update()
+    {
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+
+        animator.SetFloat("Horizontal",movement.x);
+        animator.SetFloat("Vertical",movement.y);
+        animator.SetFloat("Speed",movement.sqrMagnitude);
+
+    }
+
     void OnMove(InputValue movementValue)
     {
         movementInput = movementValue.Get<Vector2>();
+    }
+
+    void WalkingSoundPlay()
+    {
+        if(isWalking == true)
+        {
+        walkNoise.Play();
+        print("Walk Audio instance");
+        }
     }
 }
