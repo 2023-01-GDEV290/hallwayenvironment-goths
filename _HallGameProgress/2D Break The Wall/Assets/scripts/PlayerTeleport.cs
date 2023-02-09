@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerTeleport : MonoBehaviour
 {
     private GameObject currentTeleporter;
-
+    public AudioSource teleSound;
     public GameObject expandingCircle;
 
     // Start is called before the first frame update
@@ -22,7 +22,7 @@ public class PlayerTeleport : MonoBehaviour
             if(currentTeleporter != null)
             {
                 transform.position = currentTeleporter.GetComponent<Portal>().GetDestination().position;
-
+                teleSound.Play();
                 expandingCircle.SetActive(true);
             }
         }

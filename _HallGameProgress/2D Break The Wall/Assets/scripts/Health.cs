@@ -10,15 +10,22 @@ public class Health : MonoBehaviour
     public bool invincible = false;
     private float newDamage = 0;
 
+    public GameObject deathParticle;
+
+    public AudioSource breakAudio;
+    public AudioSource hitAudio;
+ 
     public SpriteRenderer spriteRenderer;
     public Sprite hitOnce;
     public Sprite hitTwice;
     public Sprite hitThrice;
 
+
     // Start is called before the first frame update
     void Start()
     {
         healthAmount = 4f;
+        deathParticle = transform.GetChild(0).gameObject;
     }
 
     void Update()
@@ -35,6 +42,12 @@ public class Health : MonoBehaviour
             }
 
         }
+
+
+
+
+
+
     }
 
     // Update is called once per frame
@@ -44,24 +57,24 @@ public class Health : MonoBehaviour
 
         if (healthAmount == 3)
         {
-            //Debug.Log("Attacked");
+            hitAudio.Play();
             spriteRenderer.sprite = hitOnce;
         }
         if (healthAmount == 2)
         {
-            //Debug.Log("Attacked");
+            hitAudio.Play();
             spriteRenderer.sprite = hitTwice;
         }
         if (healthAmount == 1)
         {
-            //Debug.Log("Attacked");
+            hitAudio.Play();
             spriteRenderer.sprite = hitThrice;
         }
         if (healthAmount == 0)
         {
             Debug.Log("Destroyed");
 
-            Destroy(gameObject, 1);
+            Die();
         }
 
     }
@@ -106,4 +119,16 @@ public class Health : MonoBehaviour
         invincible = false;
         print("Invincibility has worn off.");
     }
+
+    public void Die()
+    {
+        //ParticleSystem _ps = Instantiate(deathParticle, gameObject.transform.position, transform.position);
+        deathParticle.SetActive(true);
+        breakAudio.Play();
+        Destroy(gameObject, 1);
+
+    }
+
+
+
 }
