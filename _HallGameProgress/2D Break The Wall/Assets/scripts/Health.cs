@@ -9,6 +9,12 @@ public class Health : MonoBehaviour
     public float timerH;
     public bool invincible = false;
     private float newDamage = 0;
+
+    public SpriteRenderer spriteRenderer;
+    public Sprite hitOnce;
+    public Sprite hitTwice;
+    public Sprite hitThrice;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +35,6 @@ public class Health : MonoBehaviour
             }
 
         }
-
     }
 
     // Update is called once per frame
@@ -40,17 +45,17 @@ public class Health : MonoBehaviour
         if (healthAmount == 3)
         {
             //Debug.Log("Attacked");
-
+            spriteRenderer.sprite = hitOnce;
         }
         if (healthAmount == 2)
         {
             //Debug.Log("Attacked");
-
+            spriteRenderer.sprite = hitTwice;
         }
         if (healthAmount == 1)
         {
             //Debug.Log("Attacked");
-
+            spriteRenderer.sprite = hitThrice;
         }
         if (healthAmount == 0)
         {
